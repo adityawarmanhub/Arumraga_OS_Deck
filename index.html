@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch Deck - Transformasi Digital Arum Raga</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            /* Earthy Tones Palette */
+            --sage-green: #8B9D83;
+            --sage-light: #C2CCBC;
+            --warm-white: #FAF8F5;
+            --soft-beige: #EFE9E1;
+            --dark-wood: #4A3B32;
+            --text-dark: #2C302B;
+            --text-light: #FAF8F5;
+            
+            /* Fonts */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: #000;
+            color: var(--text-dark);
+            overflow: hidden; /* Hide scrollbars for presentation feel */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Presentation Container */
+        .presentation {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 1920px;
+            background-color: var(--warm-white);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        /* Slides */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transform: scale(0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5%;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* Slide Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            width: 100%;
+            max-width: 1200px;
+            align-items: center;
+        }
+
+        .text-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.8rem; color: var(--dark-wood); }
+        h3 { font-size: 1.8rem; color: var(--sage-green); margin-bottom: 10px; }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: inherit;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .label-phase {
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            color: var(--sage-green);
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        li i {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1.5rem;
+            color: var(--sage-green);
+        }
+
+        /* Mockups & Images */
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(74, 59, 50, 0.1);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .phone-mockup {
+            position: relative;
+            width: 300px;
+            height: 600px;
+            margin: 0 auto;
+            background-color: var(--warm-white);
+            border: 12px solid #333;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 25px;
+            background-color: #333;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 2;
+        }
+
+        .phone-content {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .btn-control {
+            background-color: var(--dark-wood);
+            color: var(--warm-white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-control:hover {
+            background-color: var(--sage-green);
+            transform: translateY(-2px);
+        }
+        
+        .progress-indicator {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-family: var(--font-body);
+            color: var(--dark-wood);
+            font-weight: 700;
+            z-index: 100;
+            letter-spacing: 2px;
+        }
+
+        /* Specific Slide Styling */
+        
+        /* Slide 1: Hero */
+        .slide-hero {
+            background-image: linear-gradient(rgba(44, 48, 43, 0.7), rgba(44, 48, 43, 0.8)), url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--warm-white);
+        }
+        .slide-hero h1 { color: var(--warm-white); }
+        .slide-hero .grid-2 { max-width: 1400px; }
+
+        /* Slide 2: Challenge */
+        .slide-challenge { background-color: var(--soft-beige); }
+        .slide-challenge li i { color: #D96C6C; } /* Red for pain points */
+        .slide-challenge h2 { color: var(--dark-wood); }
+
+        /* Slide 3: Phase 1 */
+        .slide-phase1 { background-color: var(--warm-white); }
+        
+        /* Slide 4: Phase 2 */
+        .slide-phase2 { background-color: var(--sage-light); color: var(--dark-wood); }
+        .slide-phase2 h2 { color: var(--dark-wood); }
+        .slide-phase2 li i { color: var(--dark-wood); }
+        .slide-phase2 .label-phase { color: var(--dark-wood); opacity: 0.8; }
+
+        /* Slide 5: Phase 3 */
+        .slide-phase3 { background-color: var(--soft-beige); }
+
+        /* Slide 6: Invisible Engine */
+        .slide-engine { background-color: var(--warm-white); text-align: center; }
+        .slide-engine .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+            text-align: left;
+        }
+        .engine-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--sage-green);
+        }
+        .engine-card i { font-size: 2.5rem; color: var(--sage-green); margin-bottom: 20px; }
+
+        /* Slide 7: CTA */
+        .slide-cta {
+            background-color: var(--dark-wood);
+            color: var(--warm-white);
+            text-align: center;
+        }
+        .slide-cta h2 { color: var(--warm-white); font-size: 4rem; }
+        .slide-cta p { font-size: 1.3rem; max-width: 800px; margin: 0 auto 40px; opacity: 0.9;}
+        .cta-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 50px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+
+        /* Branding Logo */
+        .brand-logo {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--sage-green);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-logo.light { color: var(--warm-white); }
+        .brand-logo i { font-size: 1.8rem; }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .grid-2 { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .grid-2 .image-container, .grid-2 .phone-mockup { margin: 0 auto; height: 400px;}
+            .slide-engine .grid-3 { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            li { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation">
+        
+        <div class="brand-logo" id="logo">
+            <i class="ph-fill ph-plant"></i> Arum Raga
+        </div>
+
+        <!-- Slide 1: Title Slide -->
+        <section class="slide slide-hero active">
+            <div class="grid-2">
+                <div class="text-content">
+                    <h1>Transformasi Digital Arum Raga</h1>
+                    <p class="subtitle">The Automated Wellness Experience & Seamless Customer Journey</p>
+                    <p style="opacity: 0.8; font-size: 1rem; border-left: 2px solid var(--sage-green); padding-left: 15px;">Pitch Deck Proposal by Estetio OS</p>
+                </div>
+                <div>
+                    <div class="phone-mockup">
+                        <div class="phone-content" style="background-image: url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                            <!-- Overlay UI simulation -->
+                            <div style="position: absolute; bottom: 0; width: 100%; height: 50%; background: linear-gradient(to top, var(--warm-white) 80%, transparent); padding: 30px 20px; text-align: center;">
+                                <h3 style="font-size: 1.2rem; margin-top: 30px; color: var(--dark-wood);">Arum Raga Spa</h3>
+                                <div style="background: var(--sage-green); color: white; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; font-family: 'Lato'; font-size: 0.9rem;">Book a Treatment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Current Challenge -->
+        <section class="slide slide-challenge">
+            <div class="grid-2" style="max-width: 1400px;">
+                <div class="image-container" style="height: 500px;">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Admin and Operations Work">
+                </div>
+                <div class="text-content">
+                    <span class="label-phase">The Current Challenge (As-Is)</span>
+                    <h2>Mengapa Operasional Terasa Berat?</h2>
+                    <ul>
+                        <li>
+                            <i class="ph-fill ph-warning-circle"></i>
+                            <strong>Friction in Booking:</strong><br> Chat WA manual yang rentan salah catat, lambat merespon, dan berisiko tinggi terjadi "No-Show".
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-trend-down"></i>
+                            <strong>Missed Opportunities:</strong><br> Terapis atau Kasir yang sibuk seringkali lupa menawarkan Upsell (Add-on treatment) kepada tamu.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-database-x"></i>
+                            <strong>Data Loss:</strong><br> Tidak ada sistem otomatis untuk menyimpan database pelanggan dan preferensi treatment mereka untuk retensi.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Phase 1 -->
+        <section class="slide slide-phase1">
+            <div class="grid-2">
+                <div class="phone-mockup">
+                    <div class="phone-content" style="background-image: url('https://images.unsplash.com/photo-1519824145371-296894a0daa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                        <div style="position: absolute; bottom: 0; width: 100%; height: 60%; background: var(--warm-white); padding: 30px 20px; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                            <div style="width: 40px; height: 4px; background: #ddd; margin: 0 auto 20px; border-radius: 2px;"></div>
+                            <h3 style="font-size: 1.1rem; color: var(--dark-wood);">Select Service</h3>
+                            <div style="border: 1px solid #eee; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                <div><strong style="font-family: 'Lato'; font-size: 0.9rem;">Balinese Massage</strong><br><span style="font-family: 'Lato'; font-size: 0.8rem; color: gray;">90 Mins</span></div>
+                                <i class="ph-fill ph-check-circle" style="color: var(--sage-green); font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="background: var(--dark-wood); color: white; padding: 12px; border-radius: 10px; margin-top: 10px; text-align: center; font-weight: bold; font-family: 'Lato'; font-size: 0.9rem;">Confirm Time</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-content">
+                    <span class="label-phase">Phase 1 (Pre-Arrival)</span>
+                    <h2>Frictionless Discovery & Booking</h2>
+                    <p class="subtitle">Perjalanan mulus dari Sosmed ke Reservasi.</p>
+                    <ul>
+                        <li>
+                            <i class="ph-fill ph-link"></i>
+                            <strong>Smart Link:</strong> Customer klik link dari Bio IG atau auto-reply WA langsung masuk ke Digital Menu yang estetik.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-user-focus"></i>
+                            <strong>No-Login Required:</strong> Checkout reservasi super cepat hanya dengan memasukkan Nama & Nomor WA. Tidak perlu buat akun.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-bell-ringing"></i>
+                            <strong>Instant Notification:</strong> Konfirmasi WhatsApp terkirim otomatis ke tamu dan jadwal langsung sinkronisasi ke Kalender Admin spa.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Phase 2 -->
+        <section class="slide slide-phase2">
+            <div class="grid-2">
+                <div class="text-content">
+                    <span class="label-phase">Phase 2 (On-Site)</span>
+                    <h2>Smart Check-in & Operations</h2>
+                    <p class="subtitle">Pelayanan personal dan manajemen stok otomatis.</p>
+                    <ul>
+                        <li>
+                            <i class="ph-fill ph-device-tablet"></i>
+                            <strong>Smart Upsell Prompt:</strong> Kasir mendapat notifikasi di layar iPad untuk menawarkan Add-on relevan (misal: aromaterapi ekstra) saat tamu check-in.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-drop"></i>
+                            <strong>Auto-Inventory:</strong> Stok lulur, essential oil, atau material nail art otomatis berkurang di sistem saat status treatment dimulai.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-calendar-check"></i>
+                            <strong>Resource Allocation:</strong> Sistem cerdas anti-bentrok. Menyelaraskan ketersediaan ruangan VIP vs kursi Nail Art vs jadwal istirahat Terapis.
+                        </li>
+                    </ul>
+                </div>
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Spa Reception Operations">
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Phase 3 -->
+        <section class="slide slide-phase3">
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Relaxed Spa Customer">
+                </div>
+                <div class="text-content">
+                    <span class="label-phase">Phase 3 (Post-Treatment)</span>
+                    <h2>Automated Retention</h2>
+                    <p class="subtitle">Mengubah tamu sesaat menjadi pelanggan setia (Mesin Cuan Berulang).</p>
+                    <ul>
+                        <li>
+                            <i class="ph-fill ph-wallet"></i>
+                            <strong>Auto-Payroll:</strong> Bebas hitung manual. Komisi dan insentif terapis dihitung otomatis secara real-time setelah tamu melakukan pembayaran.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-star"></i>
+                            <strong>H+1 Feedback:</strong> Blast pesan WhatsApp otomatis sehari setelah kunjungan untuk meminta rating dan review di Google Maps.
+                        </li>
+                        <li>
+                            <i class="ph-fill ph-arrows-clockwise"></i>
+                            <strong>Win-back Campaign:</strong> Pengingat WhatsApp otomatis di bulan berikutnya untuk re-booking, beserta info poin Loyalty (Tiering System) milik pelanggan.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: The Engine -->
+        <section class="slide slide-engine">
+            <div style="max-width: 1200px; margin: 0 auto; width: 100%;">
+                <span class="label-phase" style="justify-content: center; display: flex;">Technology Architecture</span>
+                <h2>Powered by Estetio OS</h2>
+                <p class="subtitle">Teknologi modern tanpa ribet untuk skala bisnis yang lebih besar.</p>
+                
+                <div class="grid-3">
+                    <div class="engine-card">
+                        <i class="ph-fill ph-globe-hemisphere-west"></i>
+                        <h3>100% Web-Based</h3>
+                        <p>Tidak perlu repot download atau update aplikasi. Sistem berjalan mulus di browser perangkat apapun (iPad, Laptop, Smartphone).</p>
+                    </div>
+                    <div class="engine-card">
+                        <i class="ph-fill ph-cloud-arrow-up"></i>
+                        <h3>Real-time Cloud Database</h3>
+                        <p>Data pelanggan, stok, dan jadwal tersimpan aman di server Cloud dengan enkripsi standar industri. Bebas khawatir data hilang.</p>
+                    </div>
+                    <div class="engine-card">
+                        <i class="ph-fill ph-chart-line-up"></i>
+                        <h3>Owner Dashboard</h3>
+                        <p>Pantau omzet harian, performa layanan terlaris, dan jam produktivitas terapis secara live dari mana saja, kapan saja.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: CTA -->
+        <section class="slide slide-cta">
+            <div class="cta-box">
+                <h2>Let's Build Your Dream Flow.</h2>
+                <p>Untuk merancang sistem yang 100% akurat dengan DNA dan kebutuhan operasional Arum Raga, kami membutuhkan <i>baseline data</i> Anda.</p>
+                
+                <div style="background: var(--sage-green); padding: 30px; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <h3 style="color: var(--warm-white); margin-bottom: 10px; font-family: var(--font-body); font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">Next Step Action:</h3>
+                    <p style="font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 0;">"Mari bedah data transaksi bulan lalu Anda untuk simulasi potensi kenaikan Revenue bersama Estetio OS."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress and Controls -->
+        <div class="progress-indicator" id="progress">1 / 7</div>
+        
+        <div class="controls">
+            <button class="btn-control" onclick="prevSlide()"><i class="ph-bold ph-arrow-left"></i> Prev</button>
+            <button class="btn-control" onclick="nextSlide()">Next <i class="ph-bold ph-arrow-right"></i></button>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Presentation Logic -->
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+        const logo = document.getElementById('logo');
+        let currentSlide = 0;
+
+        // Slide color themes for dynamic logo color adaptation
+        const darkSlides = [0, 6]; // Index of slides with dark backgrounds
+
+        function updateSlide() {
+            // Remove active class from all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Add active class to current slide
+            slides[currentSlide].classList.add('active');
+            
+            // Update progress indicator
+            progress.innerText = `${currentSlide + 1} / ${slides.length}`;
+
+            // Update logo color based on background
+            if(darkSlides.includes(currentSlide)) {
+                logo.classList.add('light');
+            } else {
+                logo.classList.remove('light');
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize first slide
+        updateSlide();
+    </script>
+</body>
+</html>
